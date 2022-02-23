@@ -1,1 +1,1 @@
-(()=>{"use strict";console.log("Module one"),console.log("Module two")})();
+(()=>{"use strict";(e=>{const t=document.getElementById("timer-hours"),n=document.getElementById("timer-minutes"),o=document.getElementById("timer-seconds"),m=()=>{let e=(()=>{let e=(new Date("28 february 2022").getTime()-(new Date).getTime())/1e3;return{hours:Math.floor(e/60/60),minutes:Math.floor(e/60%60),seconds:Math.floor(e%60),timeRemaining:e}})();t.textContent=e.hours,n.textContent=e.minutes,o.textContent=e.seconds,e.timeRemaining>0&&setTimeout(m,1e3)};m()})(),console.log("Module two")})();
