@@ -3,6 +3,13 @@ const timer = (deadline) => {
   const timerMinutes = document.getElementById('timer-minutes')
   const timerSeconds = document.getElementById('timer-seconds')
 
+  let interval
+
+  const convert2digit = (num) => {
+    const str = String(num)
+    return str.length < 2 ? `0${str}` : str
+  }
+
   const getTimeRemaining = () => {
     let dateStop = new Date(deadline).getTime()
     let dateNow = new Date().getTime()
@@ -20,15 +27,22 @@ const timer = (deadline) => {
   }
 
   const updateClock = () => {
-    let getTime = getTimeRemaining()
-    timerHours.textContent = getTime.hours
-    timerMinutes.textContent = getTime.minutes
-    timerSeconds.textContent = getTime.seconds
+    const { hours, minutes, seconds, timeRemaining } = getTimeRemaining()
 
-    if (getTime.timeRemaining > 0) setTimeout(updateClock, 1000)
+    if (timeRemaining <= 0) {
+      clearInterval(interval)
+      timerHours.textContent = '00'
+      timerMinutes.textContent = '00'
+      timerSeconds.textContent = '00'
+      return
+    }
+
+    timerHours.textContent = convert2digit(hours)
+    timerMinutes.textContent = convert2digit(minutes)
+    timerSeconds.textContent = convert2digit(seconds)
   }
 
-  updateClock()
+  interval = setInterval(updateClock, 1000)
 }
 
 export default timer
