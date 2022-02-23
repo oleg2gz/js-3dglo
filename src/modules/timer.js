@@ -42,6 +42,7 @@ const timer = (deadline) => {
     timerSeconds.textContent = convert2digit(seconds)
   }
 
+  updateClock()
   interval = setInterval(updateClock, 1000)
 }
 
