@@ -6,8 +6,7 @@ const timer = (deadline) => {
   let interval
 
   const convert2digit = (num) => {
-    const str = String(num)
-    return str.length < 2 ? `0${str}` : str
+    return num < 10 ? `0${num}` : num
   }
 
   const getTimeRemaining = () => {

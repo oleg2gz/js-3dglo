@@ -1,5 +1,9 @@
 import timer from './modules/timer'
-import moduleTwo from './modules/two'
+import menu from './modules/menu'
+import modal from './modules/modal'
+import scroll from './modules/scroll'
 
 timer('28 february 2022')
-moduleTwo()
+menu()
+modal()
+scroll()
