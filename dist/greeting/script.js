@@ -54,6 +54,10 @@ const showMessages = () => {
       break
 
     case hour >= 18 && hour < 23:
+      title.textContent = 'Добрый вечер!'
+      break
+
+    case hour >= 23:
     case hour >= 0 && hour < 4:
       title.textContent = 'Доброй ночи!'
   }
