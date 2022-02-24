@@ -1,10 +1,24 @@
 const scroll = () => {
   const menuItems = document.querySelectorAll('menu>ul>li>a')
-  const btnNext = document.querySelector('a[href="#service-block"]')
+  const btnNext = document.querySelector('main>a')
 
-  // Плавная прокрутка страницы при клике на элементы меню, используя requestAnimationFrame
+  const handleScroll = (e) => {
+    e.preventDefault()
 
-  // btnNextSlide - плавно переместится на следующий слайд
+    const target = e.target.closest('a')
+    const targetElement = document.querySelector(target.getAttribute('href'))
+
+    targetElement.scrollIntoView({
+      block: 'start',
+      behavior: 'smooth',
+    })
+  }
+
+  menuItems.forEach((menuItem) => {
+    menuItem.addEventListener('click', handleScroll)
+  })
+
+  btnNext.addEventListener('click', handleScroll)
 }
 
 export default scroll
