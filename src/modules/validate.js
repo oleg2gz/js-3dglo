@@ -1,97 +1,68 @@
 const validate = (selector, element, type = '') => {
   const elements = document.querySelectorAll(selector)
-  let event = element === 'select' ? 'change' : 'input'
 
-  const handleSelect = (select) => {
+  const patternNumbers = /\D/g
+  const patternCyrillic = /[^а-яА-Я\s-]/gi
+  const patternEmail = /[^\w@\-.!~*']/gi
+  const patternPhone = /[^\d\(\)-]/g
+  const patternCapitalize = /(^|\s|\-)[а-яА-Я]/g
+  const patternRepeatingSpaces = /\s{2,}/g
+  const patternRepeatingHyphens = /\-{2,}/g
+  const patternStart = /^[\s\-]{0,}/g
+  const patternEnd = /[\s\-]{0,}$/g
+
+  const handleSelect = (e) => {
+    const select = e.target
+    // TMP no functionality at the moment
     console.log(select.options[select.selectedIndex].textContent)
     console.log(select.value)
   }
 
-  const inputNumbers = (input) => {
-    // только числа
-    if (/\D/g.test(input.value)) {
-      input.value = input.value.replace(/\D/g, '')
-    }
-    if (!input.value) return
-
-    console.log(input.placeholder)
-    console.log(input.value)
-  }
-
-  const inputText = (input) => {
-    // кириллица в любом регистре, дефис и пробел
-    if (/[^а-яА-Я\s-]/gi.test(input.value)) {
-      input.value = input.value.replace(/[^а-яА-Я\s-]/gi, '')
-    }
-    if (!input.value) return
-
-    console.log(input.placeholder)
-    console.log(input.value)
-  }
-
-  const inputEmail = (input) => {
-    // латиница в любом регистре, цифры и спецсимволы: @ - _ . ! ~ * '
-    if (/[^\a-zA-Z\.\*@\-\!\~\']\s/g.test(input.value)) {
-      input.value = input.value.replace(/[^\a-zA-Z\.\*@\-\!\~\']\s/g, '')
-    }
-    if (!input.value) return
-
-    console.log(input.placeholder)
-    console.log(input.value)
-  }
-
-  const inputTelephone = (input) => {
-    // цифры, круглые скобки и дефис
-    if (/[^\d\(\)-]/g.test(input.value)) {
-      input.value = input.value.replace(/[^\d\(\)-]/g, '')
-    }
-    if (!input.value) return
-
-    console.log(input.placeholder)
-    console.log(input.value)
-  }
-
-  // первая буква каждого слова к верхнему регистру, все остальные — к нижнему
   const capitalize = (string) =>
-    string.replace(/(^|\s|\-)[а-яА-Я]/g, (char) => char.toUpperCase())
+    string.replace(patternCapitalize, (char) => char.toUpperCase())
 
-  const formatInput = (input, type = '') => {
-    if (!input.value) return
+  const formatInput = (e) => {
+    if (!e.target.value) return
 
-    input.value = input.value
-      .replace(/\s{2,}/g, ' ') // повторяющиеся пробелы
-      .replace(/\-{2,}/g, '-') // и дефисы
-      .replace(/^[\s\-]{0,}/g, '') // пробелы и дефисы в начале
-      .replace(/[\s\-]{0,}$/g, '') // и конце значения
+    e.target.value = e.target.value
+      .replace(patternRepeatingSpaces, ' ')
+      .replace(patternRepeatingHyphens, '-')
+      .replace(patternStart, '')
+      .replace(patternEnd, '')
 
-    if (type === 'text') {
-      input.value = capitalize(input.value.toLowerCase())
+    if (e.target.type === 'text') {
+      e.target.value = capitalize(e.target.value.toLowerCase())
     }
-
-    console.log(input.placeholder)
-    console.log(input.value)
+    // TMP no functionality at the moment
+    console.log(e.target.placeholder)
+    console.log(e.target.value)
   }
 
-  elements.forEach((elem) => {
-    elem.addEventListener(event, () => {
-      if (element === 'select') {
-        handleSelect(elem)
-      } else if (element === 'input') {
+  if (element === 'select') {
+    elements[0].addEventListener('change', handleSelect)
+  }
+
+  if (element === 'input') {
+    elements.forEach((input) => {
+      input.addEventListener('input', (e) => {
         if (type === 'numbers') {
-          inputNumbers(elem)
+          e.target.value = e.target.value.replace(patternNumbers, '')
+          // TMP no functionality at the moment
+          console.log(e.target.placeholder)
+          console.log(e.target.value)
         } else if (type === 'text') {
-          inputText(elem)
+          e.target.value = e.target.value.replace(patternCyrillic, '')
         } else if (type === 'email') {
-          inputEmail(elem)
+          e.target.value = e.target.value.replace(patternEmail, '')
         } else if (type === 'tel') {
-          inputTelephone(elem)
+          e.target.value = e.target.value.replace(patternPhone, '')
         }
+      })
+      if (type !== 'numbers') {
+        input.addEventListener('blur', formatInput)
       }
     })
-    if (element !== 'select' && type !== 'numbers') {
-      elem.addEventListener('blur', () => formatInput(elem, type))
-    }
-  })
+  }
 }
 
 export default validate
