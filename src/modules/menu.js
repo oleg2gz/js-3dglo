@@ -4,7 +4,8 @@ const menu = () => {
   const handleMenu = (e) => {
     if (
       e.target.closest('.menu, .close-btn, ul>li>a') ||
-      (menu.classList.contains('active-menu') && !e.target.closest('.menu'))
+      (menu.classList.contains('active-menu') &&
+        !e.target.closest('.active-menu'))
     ) {
       e.preventDefault()
 
