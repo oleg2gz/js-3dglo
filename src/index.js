@@ -2,12 +2,14 @@ import timer from './modules/timer'
 import menu from './modules/menu'
 import modal from './modules/modal'
 import scroll from './modules/scroll'
+import tabs from './modules/tabs'
 import validate from './modules/validate'
 
 timer('28 february 2022')
 menu()
 modal()
 scroll()
+tabs()
 
 // TMP will be moved to modules later???
 // Калькулятор

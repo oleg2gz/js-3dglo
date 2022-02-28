@@ -1,7 +1,6 @@
 const modal = () => {
   const modal = document.querySelector('.popup')
   const modalContent = modal.querySelector('.popup-content')
-  const btnClose = modal.querySelector('.popup-close')
   const btns = document.querySelectorAll('.popup-btn')
   let idAnimationOpen
   let idAnimationClose
@@ -43,7 +42,14 @@ const modal = () => {
       }
     })
   })
-  btnClose.addEventListener('click', () => {
+
+  modal.addEventListener('click', (e) => {
+    if (
+      e.target.closest('.popup-content') &&
+      !e.target.classList.contains('popup-close')
+    )
+      return
+
     if (window.innerWidth >= 768) {
       closeAnimation()
     } else {
