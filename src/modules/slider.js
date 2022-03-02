@@ -4,13 +4,13 @@ const slider = (options) => {
   let {
     slider,
     slide,
-    sliderBtn,
     dotContainer,
     dot,
-    slideActive,
-    dotActive,
     arrowLeft,
     arrowRight,
+    dotActive = 'not-provided',
+    slideActive = 'not-provided',
+    sliderBtn = 'portfolio-btn', // TMP-1 hardcoded !!!
   } = options
 
   const sliderBlock = document.querySelector(`.${slider}`)
@@ -22,7 +22,7 @@ const slider = (options) => {
   let interval
   let dots
 
-  const createDots = (selector, active = 'not-provided') => {
+  const createDots = (selector, active) => {
     slides.forEach((_, i) => {
       const newDot = document.createElement('li')
 
@@ -36,11 +36,11 @@ const slider = (options) => {
     dots = document.querySelectorAll(`.${selector}`)
   }
 
-  const prevSlide = (elems, index, active = 'not-provided') => {
+  const prevSlide = (elems, index, active) => {
     elems[index].classList.remove(active)
   }
 
-  const nextSlide = (elems, index, active = 'not-provided') => {
+  const nextSlide = (elems, index, active) => {
     elems[index].classList.add(active)
   }
 
@@ -63,11 +63,7 @@ const slider = (options) => {
     clearInterval(interval)
   }
 
-  // hardcoded !!!
-  // needed to turn off links behavior if props are not provided
-  sliderBtn = sliderBtn || 'portfolio-btn'
-
-  // prevent crash and link behavior if props are not privided
+  // TMP-1 Prevent crash and link behavior if props are not privided
   if (!sliderBlock || !slides[0] || !dotContainer) {
     document.querySelectorAll(`.${sliderBtn}`).forEach((btn) => {
       btn.addEventListener('click', (e) => e.preventDefault())
