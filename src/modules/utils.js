@@ -3,6 +3,15 @@ const frameDuration = 1000 / 60
 const totalFrames = Math.round(animationDuration / frameDuration)
 const easeOutQuad = (t) => t * (2 - t)
 
+const TIMEOUT_DURATION = 500
+let timeout
+
+export const debounceUserInput = (handler) => {
+  clearInterval(timeout)
+
+  timeout = setTimeout(handler, TIMEOUT_DURATION)
+}
+
 export const animateCountUp = (el) => {
   let frame = 0
   const countTo = parseInt(el.innerHTML, 10)

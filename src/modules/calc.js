@@ -1,4 +1,4 @@
-import { animateCountUp } from './utils'
+import { animateCountUp, debounceUserInput } from './utils'
 
 const calc = (price = 100) => {
   const calcBlock = document.querySelector('.calc-block')
@@ -43,7 +43,7 @@ const calc = (price = 100) => {
       e.target === calcCount ||
       e.target === calcDay
     ) {
-      countCalc()
+      debounceUserInput(countCalc)
     }
   })
 }
