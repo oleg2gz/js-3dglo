@@ -1,3 +1,5 @@
+import { animateCountUp } from './utils'
+
 const calc = (price = 100) => {
   const calcBlock = document.querySelector('.calc-block')
   const calcType = document.querySelector('select.calc-type')
@@ -31,6 +33,7 @@ const calc = (price = 100) => {
       totalValue = 0
     }
     total.textContent = totalValue
+    animateCountUp(total)
   }
 
   calcBlock.addEventListener('input', (e) => {
