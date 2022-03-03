@@ -1,7 +1,7 @@
 import { adjustIndex } from './utils'
 
-const slider = (options) => {
-  let {
+const slider = (options = {}) => {
+  const {
     slider,
     slide,
     dotContainer,
