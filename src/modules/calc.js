@@ -1,4 +1,4 @@
-import { animateCounter, debounceUserInput } from './utils'
+import { animateCounter, debounceUserInput } from './helpers'
 
 const calc = (price = 100) => {
   const calcBlock = document.querySelector('.calc-block')

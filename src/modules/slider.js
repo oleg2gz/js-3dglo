@@ -1,4 +1,4 @@
-import { adjustIndex } from './utils'
+import { adjustIndex } from './helpers'
 
 const slider = (options = {}) => {
   const {
