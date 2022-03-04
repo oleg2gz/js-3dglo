@@ -5,33 +5,6 @@ export const debounceUserInput = (handler, duration = 500) => {
   debounceTimeout = setTimeout(handler, duration)
 }
 
-export const animateCounter = (el, start, end = null, duration = 3000) => {
-  if (!el) return
-
-  end = end || parseFloat(el.textContent)
-
-  const range = end - start
-  const startTime = new Date().getTime()
-  const endTime = startTime + duration
-  let idAnimation
-
-  const run = () => {
-    idAnimation = requestAnimationFrame(run)
-
-    const now = new Date().getTime()
-    const remaining = Math.max((endTime - now) / duration, 0)
-    const current = Math.round(end - remaining * range)
-
-    el.textContent = current
-
-    if (current === end) {
-      cancelAnimationFrame(idAnimation)
-    }
-  }
-
-  run()
-}
-
 export const adjustIndex = (arr, index) => {
   if (index > arr.length - 1) {
     index = 0
@@ -40,4 +13,23 @@ export const adjustIndex = (arr, index) => {
     index = arr.length - 1
   }
   return index
+}
+
+export const animate = ({ timing, draw, duration }) => {
+  let start = performance.now()
+
+  requestAnimationFrame(function animate(time) {
+    // timeFraction изменяется от 0 до 1
+    let timeFraction = (time - start) / duration
+    if (timeFraction > 1) timeFraction = 1
+
+    // вычисление текущего состояния анимации
+    let progress = timing(timeFraction)
+
+    draw(progress) // отрисовать её
+
+    if (timeFraction < 1) {
+      requestAnimationFrame(animate)
+    }
+  })
 }
