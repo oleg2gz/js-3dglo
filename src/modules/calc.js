@@ -1,4 +1,4 @@
-import { animateCountUp, debounceUserInput } from './utils'
+import { animateCounter, debounceUserInput } from './utils'
 
 const calc = (price = 100) => {
   const calcBlock = document.querySelector('.calc-block')
@@ -8,11 +8,18 @@ const calc = (price = 100) => {
   const calcDay = document.querySelector('input.calc-day')
   const total = document.getElementById('total')
 
-  const countCalc = (e) => {
+  const countCalc = () => {
+    if (!calcType.value) {
+      calcSquare.value = ''
+      calcCount.value = ''
+      calcDay.value = ''
+    }
+
     const calcTypeValue = +calcType.options[calcType.selectedIndex].value
     const calcSquareValue = +calcSquare.value
+    const totalPrevValue = parseFloat(total.textContent)
 
-    let totalValue = 0
+    let totalValue = totalPrevValue
     let calcCountValue = 1
     let calcDayValue = 1
 
@@ -32,17 +39,13 @@ const calc = (price = 100) => {
     } else {
       totalValue = 0
     }
+
     total.textContent = totalValue
-    animateCountUp(total)
+    calcTypeValue && calcSquareValue && animateCounter(total, totalPrevValue)
   }
 
   calcBlock.addEventListener('input', (e) => {
-    if (
-      e.target === calcType ||
-      e.target === calcSquare ||
-      e.target === calcCount ||
-      e.target === calcDay
-    ) {
+    if (e.target.matches('select') || e.target.matches('input')) {
       debounceUserInput(countCalc)
     }
   })

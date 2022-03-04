@@ -1,33 +1,35 @@
-const animationDuration = 2000
-const frameDuration = 1000 / 60
-const totalFrames = Math.round(animationDuration / frameDuration)
-const easeOutQuad = (t) => t * (2 - t)
+let debounceTimeout
 
-const TIMEOUT_DURATION = 500
-let timeout
-
-export const debounceUserInput = (handler) => {
-  clearInterval(timeout)
-
-  timeout = setTimeout(handler, TIMEOUT_DURATION)
+export const debounceUserInput = (handler, duration = 500) => {
+  clearTimeout(debounceTimeout)
+  debounceTimeout = setTimeout(handler, duration)
 }
 
-export const animateCountUp = (el) => {
-  let frame = 0
-  const countTo = parseInt(el.innerHTML, 10)
-  const counter = setInterval(() => {
-    frame++
-    const progress = easeOutQuad(frame / totalFrames)
-    const currentCount = Math.round(countTo * progress)
+export const animateCounter = (el, start, end = null, duration = 3000) => {
+  if (!el) return
 
-    if (parseInt(el.innerHTML, 10) !== currentCount) {
-      el.innerHTML = currentCount
-    }
+  end = end || parseFloat(el.textContent)
 
-    if (frame === totalFrames) {
-      clearInterval(counter)
+  const range = end - start
+  const startTime = new Date().getTime()
+  const endTime = startTime + duration
+  let idAnimation
+
+  const run = () => {
+    idAnimation = requestAnimationFrame(run)
+
+    const now = new Date().getTime()
+    const remaining = Math.max((endTime - now) / duration, 0)
+    const current = Math.round(end - remaining * range)
+
+    el.textContent = current
+
+    if (current === end) {
+      cancelAnimationFrame(idAnimation)
     }
-  }, frameDuration)
+  }
+
+  run()
 }
 
 export const adjustIndex = (arr, index) => {
