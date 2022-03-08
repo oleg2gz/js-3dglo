@@ -1,4 +1,4 @@
-const scroll = () => {
+export const scroll = () => {
   const handleScroll = (e) => {
     if (e.target.closest('menu>ul>li>a, main>a[href="#service-block"]')) {
       e.preventDefault()
@@ -15,5 +15,3 @@ const scroll = () => {
 
   document.addEventListener('click', handleScroll)
 }
-
-export default scroll

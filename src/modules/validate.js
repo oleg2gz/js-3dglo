@@ -1,10 +1,10 @@
-const validate = (selector, type = '') => {
+export const validate = (selector, type = '') => {
   const elements = document.querySelectorAll(selector)
 
   const patternNumbers = /\D/g
-  const patternCyrillic = /[^а-яА-Я\s-]/gi
+  const patternCyrillic = /[^а-яА-Я\s]/gi
   const patternEmail = /[^\w@\-.!~*']/gi
-  const patternPhone = /[^\d\(\)-]/g
+  const patternPhone = /[^\d\(\)\-\+]/g
   const patternCapitalize = /(^|\s|\-)[а-яА-Я]/g
   const patternRepeatingSpaces = /\s{2,}/g
   const patternRepeatingHyphens = /\-{2,}/g
@@ -45,5 +45,3 @@ const validate = (selector, type = '') => {
     }
   })
 }
-
-export default validate

@@ -1,6 +1,6 @@
 import { animate, debounceUserInput } from './helpers'
 
-const calc = (price = 100) => {
+export const calc = (price = 100) => {
   const calcBlock = document.querySelector('.calc-block')
   const calcType = document.querySelector('select.calc-type')
   const calcSquare = document.querySelector('input.calc-square')
@@ -68,5 +68,3 @@ const calc = (price = 100) => {
     }
   })
 }
-
-export default calc

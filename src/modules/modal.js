@@ -1,6 +1,6 @@
 import { animate } from './helpers'
 
-const modal = () => {
+export const modal = () => {
   const modal = document.querySelector('.popup')
   const modalContent = modal.querySelector('.popup-content')
   const btns = document.querySelectorAll('.popup-btn')
@@ -59,5 +59,3 @@ const modal = () => {
     }
   })
 }
-
-export default modal

@@ -1,4 +1,4 @@
-const menu = () => {
+export const menu = () => {
   const menu = document.querySelector('menu')
 
   const handleMenu = (e) => {
@@ -15,5 +15,3 @@ const menu = () => {
 
   document.addEventListener('click', handleMenu)
 }
-
-export default menu

@@ -1,6 +1,6 @@
 import { adjustIndex } from './helpers'
 
-const slider = (options = {}) => {
+export const slider = (options = {}) => {
   const {
     slider,
     slide,
@@ -118,5 +118,3 @@ const slider = (options = {}) => {
 
   startSlide(timeInterval)
 }
-
-export default slider
