@@ -8,13 +8,10 @@ export const sendForm = ({ formId, someElem = [] }) => {
   const validate = (list) => {
     let success = true
 
-    // !!! Add success and error classes in validate.js !!!
-
     list.forEach((input) => {
-      if (!input.classList.contains('success')) {
+      if (!input.dataset.valid) {
         success = false
-      } else {
-        alert('Данные не заполнены!')
+        input.style.border = '5px solid red'
       }
     })
 
@@ -38,9 +35,6 @@ export const sendForm = ({ formId, someElem = [] }) => {
     const formData = new FormData(form)
     const formBody = {}
 
-    statusBlock.textContent = loadText
-    form.append(statusBlock)
-
     formData.forEach((val, key) => {
       formBody[key] = val
     })
@@ -56,12 +50,15 @@ export const sendForm = ({ formId, someElem = [] }) => {
     })
 
     if (validate(formElements)) {
+      statusBlock.textContent = loadText
+
       sendData(formBody)
         .then((_) => {
           statusBlock.textContent = successText
 
           formElements.forEach((input) => {
             input.value = ''
+            input.dataset.valid = ''
           })
         })
         .catch((err) => {
@@ -74,6 +71,10 @@ export const sendForm = ({ formId, someElem = [] }) => {
     if (!form) {
       throw new Error('Верни форму на место, гадёныш! :)')
     }
+
+    statusBlock.style.color = 'white'
+    form.append(statusBlock)
+
     form.addEventListener('submit', handleSubmit)
   } catch (error) {
     console.log(error.message)

@@ -21,6 +21,24 @@ sendForm({
     },
   ],
 })
+sendForm({
+  formId: 'form2',
+  someElem: [
+    {
+      type: 'block',
+      id: 'total',
+    },
+  ],
+})
+sendForm({
+  formId: 'form3',
+  someElem: [
+    {
+      type: 'block',
+      id: 'total',
+    },
+  ],
+})
 slider({
   slider: 'portfolio-content',
   slide: 'portfolio-item',
@@ -35,7 +53,7 @@ slider({
 tabs()
 timer('18 march 2022')
 validate('input.calc-item', 'numbers')
-validate('input[name=user_message]', 'text')
-validate('input[name=user_name]', 'text')
+validate('input[name=user_message]', 'message')
+validate('input[name=user_name]', 'name')
 validate('input[type=email]', 'email')
 validate('input[type=tel]', 'tel')
