@@ -6,17 +6,43 @@ export const sendForm = ({ formId, someElem = [] }) => {
   const successText = 'Спасибо! Наш менеджер с вами свяжется'
 
   const validate = (list) => {
+    statusBlock.textContent = ''
+
     let success = true
 
     list.forEach((input) => {
       if (!input.dataset.valid) {
+        if (input.name === 'user_name') {
+          statusBlock.insertAdjacentHTML(
+            'beforeend',
+            '<p style="text-align: center;">Ваше имя должно состоять не менее, чем из двух букв</p>'
+          )
+        }
+        if (input.name === 'user_email') {
+          statusBlock.insertAdjacentHTML(
+            'beforeend',
+            '<p style="text-align: center;">Поле E-mail должно быть заполнено</p>'
+          )
+        }
+        if (input.name === 'user_phone') {
+          statusBlock.insertAdjacentHTML(
+            'beforeend',
+            '<p style="text-align: center;">Номер телефона должен состоять от 5 до 16 цифр</p>'
+          )
+        }
+        if (input.name === 'user_message') {
+          statusBlock.insertAdjacentHTML(
+            'beforeend',
+            '<p style="text-align: center;">Ваше сообщение должно состоять не менее, чем из двух букв</p>'
+          )
+        }
         success = false
         input.style.border = '5px solid red'
       }
     })
 
     return success
-  }
+  } // end validate
 
   const sendData = (data) => {
     return fetch('https://jsonplaceholder.typicode.com/posts', {
@@ -26,7 +52,7 @@ export const sendForm = ({ formId, someElem = [] }) => {
         'Content-type': 'application/json; charset=UTF-8',
       },
     }).then((res) => res.json())
-  }
+  } // end sendData
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -65,13 +91,14 @@ export const sendForm = ({ formId, someElem = [] }) => {
           statusBlock.textContent = errorText
         })
     }
-  }
+  } // end handleSubmit
 
   try {
     if (!form) {
       throw new Error('Верни форму на место, гадёныш! :)')
     }
 
+    statusBlock.classList.add('request-status')
     statusBlock.style.color = 'white'
     form.append(statusBlock)
 

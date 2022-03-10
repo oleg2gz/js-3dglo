@@ -1,10 +1,11 @@
-export const validate = (selector, type = '') => {
+export const validate = (selector) => {
   const elements = document.querySelectorAll(selector)
 
   const patternNumbers = /\D/g
   const patternCyrillicName = /[^а-яА-Я\s]/g
   const patternCyrillicMessage = /[^а-яА-Я0-9\s\-.,:;!?]/g
-  const patternEmail = /[^\w@\-.!~*']/g
+  const patternEmailInput = /[^\w@\-.!~*']/g
+  const patternEmailTest = /[\w\-.]+@([\w]+\.)+[\w]+/gi
   const patternPhone = /[^\d\-+()]/g
   const patternCapitalize = /(^|\s|\-)[а-яА-Я]/g
   const patternRepeatingSpaces = /\s{2,}/g
@@ -13,47 +14,68 @@ export const validate = (selector, type = '') => {
   const patternEnd = /[\s-]*$/g
 
   const setValid = (input) => {
+    input.dataset.valid = ''
+    if (!input.value) return
+    if (input.name === 'user_name') {
+      if (input.value.match(/[а-я]/gi).join('').length < 2) return
+    }
+    if (input.name === 'user_email') {
+      if (!patternEmailTest.test(input.value)) return
+    }
+    if (input.name === 'user_phone') {
+      if (
+        input.value.match(/\d/g).join('').length < 5 ||
+        input.value.match(/\d/g).join('').length > 16
+      )
+        return
+    }
+    if (input.name === 'user_message') {
+      if (!/[а-я]{2,}/gi.test(input.value)) return
+    }
     input.dataset.valid = true
-  }
+  } // end setValid
 
   const capitalize = (string) =>
     string.replace(patternCapitalize, (char) => char.toUpperCase())
 
   const formatInput = (e) => {
-    let value = e.target.value
+    if (!e.target.value) return
 
-    if (!value) return
-
-    value = value
+    e.target.value = e.target.value
       .replace(patternRepeatingSpaces, ' ')
       .replace(patternRepeatingHyphens, '-')
       .replace(patternStart, '')
       .replace(patternEnd, '')
 
-    if (e.target.type === 'name') {
-      value = capitalize(value.toLowerCase())
+    if (e.target.name === 'user_name') {
+      e.target.value = capitalize(e.target.value.toLowerCase())
     }
-    if (value !== '') setValid(e.target)
-  }
+    if (e.target.value) {
+      setValid(e.target)
+    }
+  } // end formatInput
 
   elements.forEach((input) => {
     input.addEventListener('input', (e) => {
-      e.target.style.border = ''
-      let value = e.target.value
+      document.querySelectorAll('.request-status').forEach((item) => {
+        item.textContent = ''
+      })
 
-      if (type === 'numbers') {
-        value = value.replace(patternNumbers, '')
-      } else if (type === 'name') {
-        value = value.replace(patternCyrillicName, '')
-      } else if (type === 'message') {
-        value = value.replace(patternCyrillicMessage, '')
-      } else if (type === 'email') {
-        value = value.replace(patternEmail, '')
-      } else if (type === 'tel') {
-        value = value.replace(patternPhone, '')
+      e.target.style.border = ''
+
+      if (e.target.classList.contains('calc-item')) {
+        e.target.value = e.target.value.replace(patternNumbers, '')
+      } else if (e.target.name === 'user_name') {
+        e.target.value = e.target.value.replace(patternCyrillicName, '')
+      } else if (e.target.name === 'user_email') {
+        e.target.value = e.target.value.replace(patternEmailInput, '')
+      } else if (e.target.name === 'user_phone') {
+        e.target.value = e.target.value.replace(patternPhone, '')
+      } else if (e.target.name === 'user_message') {
+        e.target.value = e.target.value.replace(patternCyrillicMessage, '')
       }
     })
-    if (type !== 'numbers') {
+    if (!input.classList.contains('calc-item')) {
       input.addEventListener('blur', formatInput)
     }
   })
