@@ -5,7 +5,7 @@ export const validate = (selector) => {
   const patternCyrillicName = /[^а-яА-Я\s]/g
   const patternCyrillicMessage = /[^а-яА-Я0-9\s\-.,:;!?]/g
   const patternEmailInput = /[^\w@\-.!~*']/g
-  const patternEmailTest = /[\w\-.]+@([\w]+\.)+[\w]+/gi
+  const patternEmailTest = /^[\w\-.]+@[\w\-]+(\.[\w\-]+)*\.[\w]+$/i
   const patternPhone = /[^\d\-+()]/g
   const patternCapitalize = /(^|\s|\-)[а-яА-Я]/g
   const patternRepeatingSpaces = /\s{2,}/g

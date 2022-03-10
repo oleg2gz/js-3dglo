@@ -5,6 +5,19 @@ export const sendForm = ({ formId, someElem = [] }) => {
   const errorText = 'Ошибка...'
   const successText = 'Спасибо! Наш менеджер с вами свяжется'
 
+  // Animation Start
+  const wrap = document.createElement('div')
+  const box1 = document.createElement('div')
+  const box2 = document.createElement('div')
+  const box3 = document.createElement('div')
+
+  wrap.classList.add('wrap')
+  box1.classList.add('box1')
+  box2.classList.add('box2')
+  box3.classList.add('box3')
+  wrap.append(box1, box2, box3)
+  // Animation End
+
   const validate = (list) => {
     statusBlock.textContent = ''
 
@@ -76,7 +89,7 @@ export const sendForm = ({ formId, someElem = [] }) => {
     })
 
     if (validate(formElements)) {
-      statusBlock.textContent = loadText
+      statusBlock.append(wrap)
 
       sendData(formBody)
         .then((_) => {
@@ -99,6 +112,7 @@ export const sendForm = ({ formId, someElem = [] }) => {
     }
 
     statusBlock.classList.add('request-status')
+    statusBlock.style.position = 'relative'
     statusBlock.style.color = 'white'
     form.append(statusBlock)
 
