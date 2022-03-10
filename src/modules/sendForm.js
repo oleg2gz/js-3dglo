@@ -1,6 +1,10 @@
+import { fetchData } from './fetch'
+import { animate } from './helpers'
+
 export const sendForm = ({ formId, someElem = [] }) => {
   const form = document.getElementById(formId)
   const statusBlock = document.createElement('div')
+  const url = 'https://jsonplaceholder.typicode.com/posts'
   const loadText = 'Загрузка...'
   const errorText = 'Ошибка...'
   const successText = 'Спасибо! Наш менеджер с вами свяжется'
@@ -17,6 +21,28 @@ export const sendForm = ({ formId, someElem = [] }) => {
   box3.classList.add('box3')
   wrap.append(box1, box2, box3)
   // Animation End
+
+  const animateModal = () => {
+    const modal = document.querySelector('.popup')
+    const modalContent = modal.querySelector('.popup-content')
+
+    animate({
+      duration: 500,
+      timing(timeFraction) {
+        return timeFraction
+      },
+      draw(progress) {
+        modal.style.opacity = 1 - progress
+        modalContent.style.opacity = 1 - progress
+
+        if (modal.style.opacity <= 0) {
+          modal.style.opacity = 0
+          modalContent.style.opacity = 0
+          modal.style.display = 'none'
+        }
+      },
+    })
+  } // end animateModal
 
   const validate = (list) => {
     statusBlock.textContent = ''
@@ -57,16 +83,6 @@ export const sendForm = ({ formId, someElem = [] }) => {
     return success
   } // end validate
 
-  const sendData = (data) => {
-    return fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-    }).then((res) => res.json())
-  } // end sendData
-
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -91,9 +107,11 @@ export const sendForm = ({ formId, someElem = [] }) => {
     if (validate(formElements)) {
       statusBlock.append(wrap)
 
-      sendData(formBody)
+      fetchData(url, 'POST', formBody)
         .then((_) => {
           statusBlock.textContent = successText
+
+          setTimeout(animateModal, 1500)
 
           formElements.forEach((input) => {
             input.value = ''
